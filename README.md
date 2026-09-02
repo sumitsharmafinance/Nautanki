@@ -1,4 +1,4 @@
-# Komal Birthday Microsite
+# Nautanki's Birthday Microsite
 
 A mobile-first static birthday microsite for GitHub Pages.
 
