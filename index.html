@@ -615,7 +615,7 @@ function initParallax(){
     if(e.beta==null||e.gamma==null)return;
     const dx=Math.max(-1,Math.min(1,e.gamma/30)); const dy=Math.max(-1,Math.min(1,(e.beta-45)/30));
     apply(dx,dy);
-  });
+  }); 
 }
 function initSwipe(){
   let sx=0,sy=0,active=false;
