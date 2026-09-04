@@ -665,19 +665,46 @@ function fireConfetti(){
 function initLock(){
   const lock=document.getElementById('lock'); if(!lock)return;
   const params=new URLSearchParams(location.search);
-  if(params.get('preview')==='1'){lock.classList.add('hidden');return}
+
+  // Preview mode lets you test the full experience before September 5.
+  if(params.get('preview')==='1'){
+    lock.classList.add('hidden');
+    return;
+  }
+
   const now=new Date();
-  let target=new Date(now.getFullYear(),8,5,0,0,0); // month 8 = September
-  if(now>target)target=new Date(now.getFullYear()+1,8,5,0,0,0);
-  if(now>=target){lock.classList.add('hidden');return}
+
+  // Unlock at 12:00:00 AM on September 5 in the visitor's local timezone.
+  // JavaScript's numeric Date constructor uses local time.
+  const target=new Date(now.getFullYear(),8,5,0,0,0,0);
+
+  // Once September 5 begins, stay unlocked for the rest of that date
+  // and for the remainder of the year.
+  if(now>=target){
+    lock.classList.add('hidden');
+    return;
+  }
+
   const cd=document.getElementById('lockCountdown');
+
   const tick=()=>{
     const diff=target-new Date();
-    if(diff<=0){lock.classList.add('hidden');return}
-    const d=Math.floor(diff/86400000),h=Math.floor(diff%86400000/3600000),m=Math.floor(diff%3600000/60000),s=Math.floor(diff%60000/1000);
+
+    if(diff<=0){
+      lock.classList.add('hidden');
+      return;
+    }
+
+    const d=Math.floor(diff/86400000);
+    const h=Math.floor(diff%86400000/3600000);
+    const m=Math.floor(diff%3600000/60000);
+    const s=Math.floor(diff%60000/1000);
+
     cd.textContent=`${d}d ${h}h ${m}m ${s}s`;
-    requestAnimationFrame(()=>setTimeout(tick,1000));
+
+    setTimeout(tick,1000);
   };
+
   tick();
 }
 function tapCapsule(){
@@ -685,7 +712,7 @@ function tapCapsule(){
   note.classList.add('show');
 }
 // Replace with your own WhatsApp number, country code first, no + or spaces (e.g. '919876543210')
-const SUMI_WHATSAPP='YOUR_NUMBER_HERE';
+const SUMI_WHATSAPP='919833811101';
 function sendChoices(){
   const lines=[];
   if(answers[2]) lines.push('"Am I right?" — '+answers[2]);
@@ -889,5 +916,7 @@ initSwipe();
 runBoot();
 initLock();
 </script>
+</body>
+</html>
 </body>
 </html>
